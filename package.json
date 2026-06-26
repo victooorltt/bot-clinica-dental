@@ -1,0 +1,19 @@
+{
+  "name": "bot-syntralabs",
+  "version": "1.0.0",
+  "description": "AI Chatbot and CRM Lead qualification agent for Syntra Labs",
+  "main": "src/server/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server/index.js",
+    "dev": "node --watch src/server/index.js"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.15",
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "openai": "^6.45.0",
+    "resend": "^3.2.0"
+  }
+}

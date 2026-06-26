@@ -1,0 +1,152 @@
+================================================================================
+          GUÍA DE CONFIGURACIÓN Y OPERACIÓN DEL BOT - SYNTRA LABS
+================================================================================
+
+Esta guía ha sido diseñada para que puedas comprender, gestionar e integrar el
+Agente de Inteligencia Artificial de Syntra Labs de manera sencilla y sin
+necesidad de conocimientos técnicos avanzados.
+
+--------------------------------------------------------------------------------
+ÍNDICE:
+1. Configuración de Credenciales (Archivo `.env`)
+2. ¿Dónde están las instrucciones/prompts de la Inteligencia Artificial?
+3. Configuración y Propiedades de la Base de Datos de Notion (CRM)
+4. Integración del Asistente (Widget de Chat) en tu Sitio Web
+5. Cómo iniciar el Bot en tu ordenador local para hacer pruebas
+--------------------------------------------------------------------------------
+
+
+1. CONFIGURACIÓN DE CREDENCIALES (El archivo `.env`)
+================================================================================
+El archivo `.env` (ubicado en la carpeta raíz del proyecto) es como la "caja 
+fuerte" donde se guardan las claves secretas y la configuración básica para que 
+el bot funcione.
+
+Si deseas configurar o cambiar estas claves, abre este archivo con cualquier 
+editor de texto (como el Bloc de Notas o VS Code) y edita los siguientes valores:
+
+*   PORT: El puerto de red donde se ejecuta el servidor del bot (por defecto 3000).
+    Solo para desarrollos locales y pruebas
+*   OPENAI_API_KEY: Tu clave de OpenAI (comienza por 'sk-'). Esta clave le da
+    "cerebro" e inteligencia al bot.
+*   NOTION_API_KEY: El token de integración de Notion que le permite al bot
+    conectarse e insertar los clientes potenciales (leads).
+*   NOTION_DATABASE_ID: El código identificador de tu base de datos de Notion
+    (CRM) donde se añadirán los nuevos registros.
+*   RESEND_API_KEY: Clave para el servicio de envío de correos electrónicos (Resend).
+*   EMAIL_FROM / RESEND_FROM_EMAIL: Dirección de correo desde la cual se enviarán
+    las notificaciones de nuevos leads (ej. info@tuempresa.com).
+*   EMAIL_TO / RESEND_TO_EMAIL: Dirección de correo donde deseas recibir las alertas
+    de nuevos leads (ej. comercial@tuempresa.com).
+
+Nota: Asegúrate de guardar los cambios y nunca compartir este archivo públicamente,
+ya que contiene accesos privados que podrían ser mal utilizados.
+
+
+2. ¿DÓNDE ESTÁN LAS INSTRUCCIONES DE LA IA? (Prompts)
+================================================================================
+El comportamiento, personalidad e información que maneja el agente de IA se 
+define en dos lugares principales:
+
+A. Código del Servidor (Para desarrolladores):
+   En el archivo 'src/server/controllers/chat.controller.js' se encuentra la
+   información estructurada de respuesta:
+   *   Variable 'KNOWLEDGE_BASE' (Base de conocimientos): Contiene información 
+       sobre servicios, precios, plazos y preguntas frecuentes de Syntra Labs.
+   *   Variable 'SYSTEM_INSTRUCTION' (Instrucciones del sistema): Define la 
+       personalidad del bot (cercano, claro, profesional), el flujo de captación 
+       y los 6 datos obligatorios que el bot debe recopilar de forma progresiva
+       y natural (Nombre, Empresa, Email, Teléfono, Objetivos y Plazo).
+
+B. Archivos de Texto en la Carpeta Raíz (Para consulta y edición fácil):
+   En la raíz del proyecto existen archivos con las bases de conocimiento y 
+   guías operativas que sirvieron para entrenar al agente:
+   *   `Prompt para el agente.txt`
+   *   `Base de conocimiento - guion basico syntralabs.txt`
+   *   `Documento Funcional.txt`
+   *   `Integracion con CRM, Leads y Flujo Comercial.txt`
+
+Si deseas que el bot responda cosas diferentes o tenga nuevos datos sobre tu 
+empresa, deberás actualizar la variable 'KNOWLEDGE_BASE' dentro del archivo 
+'src/server/controllers/chat.controller.js'.
+
+
+3. CÓMO REVISAR O MODIFICAR LAS PROPIEDADES EN NOTION
+================================================================================
+Cuando un visitante interactúa con el bot y proporciona sus datos, el bot los
+guarda automáticamente en tu base de datos de Notion. Para que esto funcione,
+tu base de datos en Notion debe tener exactamente las siguientes propiedades 
+(columnas) configuradas:
+
+*   Nombre (Tipo: Título / Title): Nombre completo del lead.
+*   Empresa (Tipo: Texto / Rich Text): Nombre de la empresa o negocio.
+*   Teléfono (Tipo: Teléfono / Phone): Número de contacto.
+*   Email (Tipo: Correo electrónico / Email): Dirección de email de contacto.
+*   Página web actual (Tipo: URL): Dirección de su sitio web (si aplica).
+*   Sector (Tipo: Texto / Rich Text): Sector de actividad.
+*   Servicio solicitado (Tipo: Selección / Select): Clasificado automáticamente 
+    por el bot entre 'Diseño web', 'Agente IA', 'Automatización' u 'Otro'.
+*   Estado comercial (Tipo: Estado / Status): Se creará automáticamente con el
+    estado 'NUEVO LEAD'.
+*   Origen del lead (Tipo: Selección / Select): Se marcará como 'Agente IA'.
+*   Observaciones (Tipo: Texto / Rich Text): Contiene los objetivos del cliente
+    y el plazo de inicio recopilados por el bot.
+
+Importante: Si cambias el nombre de alguna de estas columnas en Notion, deberás
+avisar a soporte técnico para que actualice las referencias en el archivo 
+'src/server/services/notion.service.js', de lo contrario no se podrán registrar.
+
+
+4. CÓMO INTEGRAR EL WIDGET EN TU SITIO WEB
+================================================================================
+Integrar este asistente en cualquier página web existente es sumamente sencillo.
+Solo tienes que añadir las siguientes etiquetas en el archivo HTML principal
+de tu web (normalmente 'index.html'):
+
+1. En la cabecera (<head>):
+   Agrega esta etiqueta para cargar el script del chat:
+   
+   <script src="http://localhost:3000/js/widget.js" defer></script>
+   
+   (Nota: Reemplaza 'http://localhost:3000' con la dirección real (URL) de tu
+   servidor cuando subas el bot a internet en producción).
+
+2. Estilo automático:
+   El script se encarga de cargar automáticamente el diseño y los estilos 
+   visuales desde el servidor (/css/widget.css), por lo que no necesitas enlazar 
+   hojas de estilo CSS manualmente.
+
+3. Botón de activación (Opcional):
+   Si deseas que un botón o enlace de tu propia web abra la ventana del chat al 
+   hacer clic, puedes añadirle el siguiente atributo:
+   
+   onclick="document.getElementById('syntra-trigger').click()"
+
+
+5. CÓMO INICIAR EL BOT LOCALMENTE PARA HACER PRUEBAS
+================================================================================
+Para probar el bot en tu ordenador local antes de subirlo a internet:
+
+1. Instalar Node.js: Asegúrate de tener instalado Node.js (descargable gratis 
+   desde https://nodejs.org).
+2. Instalar dependencias: Abre una consola de comandos (Terminal o PowerShell)
+   en la carpeta del proyecto y ejecuta:
+   
+   npm install
+
+3. Configurar credenciales: Crea una copia del archivo '.env.example', llámalo
+   '.env' y completa las variables con tus credenciales reales (ver Sección 1).
+4. Iniciar el servidor:
+   *   Para uso normal:
+       npm start
+       
+   *   Para desarrollo (el servidor se reiniciará automáticamente si guardas
+       cambios en los archivos):
+       npm run dev
+       
+5. Probar en el navegador: Abre tu navegador web y entra a:
+   http://localhost:3000
+   
+   Verás la demo de Syntra Labs con el botón del bot de chat en la parte 
+   inferior derecha listo para ser probado.
+================================================================================

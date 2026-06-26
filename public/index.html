@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syntra Labs - Sistemas Inteligentes e Integraciones IA</title>
+  <!-- SEO Tags -->
+  <meta name="description" content="Diseño web moderno, agentes de inteligencia artificial a medida y automatización de procesos para impulsar tus ventas y mejorar tu atención al cliente.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Inject Chat Widget -->
+  <script src="/js/widget.js" defer></script>
+
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent: hsl(220, 90%, 56%);
+      --accent-glow: rgba(37, 99, 235, 0.3);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --font-outfit: 'Outfit', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-outfit);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient background glows */
+    .glow-sphere {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-glow) 0%, rgba(9, 13, 22, 0) 70%);
+      filter: blur(80px);
+      z-index: -1;
+      opacity: 0.6;
+    }
+    .glow-top-left {
+      top: -150px;
+      left: -150px;
+    }
+    .glow-bottom-right {
+      bottom: -150px;
+      right: -150px;
+    }
+
+    /* Navigation */
+    header {
+      width: 100%;
+      padding: 24px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background: rgba(9, 13, 22, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 32px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--text-main);
+    }
+
+    /* Main Container */
+    main {
+      padding: 160px 8% 80px 8%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      margin-bottom: 100px;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(37, 99, 235, 0.1);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: hsl(220, 95%, 65%);
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      background: linear-gradient(to right, #ffffff, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 40px auto;
+    }
+
+    .btn-primary {
+      padding: 14px 32px;
+      background: linear-gradient(135deg, var(--accent), #1d4ed8);
+      color: #ffffff;
+      font-family: var(--font-outfit);
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(37, 99, 235, 0.5);
+    }
+
+    /* Services Grid */
+    .services-title {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .services-title h2 {
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      margin-bottom: 80px;
+    }
+
+    .service-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(37, 99, 235, 0.1);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: hsl(220, 95%, 65%);
+      margin-bottom: 24px;
+    }
+
+    .service-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .service-card p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      border-top: 1px solid var(--card-border);
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-sphere glow-top-left"></div>
+  <div class="glow-sphere glow-bottom-right"></div>
+
+  <header>
+    <div class="logo">SYNTRA LABS</div>
+    <nav>
+      <a href="#servicios">Servicios</a>
+      <a href="#contacto" onclick="event.preventDefault(); document.getElementById('syntra-trigger').click()">Contacto</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <span class="hero-tag">Tecnología Inteligente</span>
+      <h1>Sistemas Inteligentes.<br>Soluciones Automatizadas.<br>Impacto Real.</h1>
+      <p>Transformamos tu negocio mediante el diseño web premium, agentes conversacionales con Inteligencia Artificial e integraciones de software a medida.</p>
+      <button class="btn-primary" onclick="document.getElementById('syntra-trigger').click()">Probar Agente IA</button>
+    </section>
+
+    <section id="servicios">
+      <div class="services-title">
+        <h2>Nuestros Servicios de Vanguardia</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">🌐</div>
+          <h3>Diseño y Desarrollo Web</h3>
+          <p>Sitios web corporativos rápidos, modernos, optimizados para móviles y orientados a convertir visitas en clientes finales.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🤖</div>
+          <h3>Agentes Inteligentes IA</h3>
+          <p>Modelos y agentes entrenados con tu conocimiento de negocio para atender, cualificar y registrar prospectos 24/7 de forma autónoma.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">⚡</div>
+          <h3>Automatización de Procesos</h3>
+          <p>Eliminamos tareas repetitivas conectando tus sistemas favoritos (WhatsApp, Notion, Email) para ahorrar tiempo y evitar errores humanos.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Syntra Labs. Todos los derechos reservados. | Diseñado para el Futuro Comercial.</p>
+  </footer>
+
+</body>
+</html>

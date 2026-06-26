@@ -1,0 +1,46 @@
+No es necesario que te pasen todo el código de su página web. Esa es la gran ventaja de haber diseñado el bot como un widget embebible (similar a cómo
+funciona Google Analytics, Zendesk o HubSpot Chat).
+
+El proceso exacto consta de 3 sencillos pasos:
+──────
+### Paso 1: Subir el servidor del bot a Internet (Despliegue)
+
+El código de tu servidor local (Node.js/Express) debe estar encendido las 24 horas. Para ello, debes subirlo a un hosting en la nube:
+
+1. Sube la carpeta del proyecto a un repositorio privado en GitHub.
+2. Conéctalo a un servicio de hosting para Node.js como Render.com o Railway.app (ambos tienen planes gratuitos o muy baratos y se configuran en 5
+minutos).
+3. En la configuración del hosting, añade las variables de tu archivo  .env  ( OPENAI_API_KEY ,  NOTION_API_KEY , etc.).
+4. Una vez subido, el hosting te dará una URL pública oficial (ejemplo:  https://bot-syntralabs.onrender.com ).
+──────
+### Paso 2: Apuntar el Widget a la URL pública
+
+Antes de darle el código al cliente, debes asegurarte de que el script de chat se comunique con tu servidor en la nube en lugar de tu ordenador local:
+
+1. En el archivo widget.js, cambia la dirección del servidor (donde hace el  fetch  al API) para que apunte a la URL pública que te dio el hosting
+(ej.  https://bot-syntralabs.onrender.com/api/chat ).
+──────
+### Paso 3: Instalación en la web del cliente
+
+Una vez tu servidor está en Internet, solo tienes que generarle al cliente estas dos líneas de código HTML:
+
+<!-- Estilos del Chatbot -->
+<link rel="stylesheet" href="https://bot-syntralabs.onrender.com/css/widget.css">
+
+<!-- Lógica del Chatbot -->
+<script src="https://bot-syntralabs.onrender.com/js/widget.js" defer></script>
+
+¿Cómo lo colocan en su web?
+Dependiendo de qué plataforma utilicen en su web, el cliente (o tú si te dan acceso) hará lo siguiente:
+
+• Si es una web a medida (HTML/PHP/React): Solo deben pegar esas dos líneas en el archivo principal (generalmente  index.html  o  footer.html ), justo
+antes de la etiqueta de cierre  </body> .
+• Si usan WordPress: Pueden usar un plugin gratuito como Insert Headers and Footers y pegar el código en la sección de "Footer", o añadirlo en la
+configuración de su tema.
+• Si usan Webflow / Shopify / Wix: Estas plataformas tienen una sección en su panel de administración llamada "Custom Code" (Código personalizado) o
+"Header/Footer scripts". Solo deben pegar las dos líneas allí.
+
+¿Te tienen que pasar su código?
+Solo si ellos no tienen conocimientos para pegar esas dos líneas y quieren que lo hagas tú. En ese caso, en lugar de pasarte todo el código, lo más
+cómodo es que te den un acceso temporal de administrador a su gestor de contenidos (WordPress, Shopify, Webflow) y tú mismo pegas el código en 2 minutos
+desde el panel de administración.
