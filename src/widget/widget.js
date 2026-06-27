@@ -38,7 +38,9 @@
   const windowHtml = `
     <div class="syntra-chat-window" id="syntra-window">
       <div class="syntra-chat-header">
-        <div class="syntra-chat-logo">S</div>
+        <div class="syntra-chat-logo">
+          <img src="${backendUrl}/assets/logo.png" alt="Logo" />
+        </div>
         <div class="syntra-chat-info">
           <h3 class="syntra-chat-title">Syntra Labs</h3>
           <div class="syntra-chat-status">
