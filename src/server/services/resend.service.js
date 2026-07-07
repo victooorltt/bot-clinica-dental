@@ -21,7 +21,7 @@ function getResendClient() {
 export async function sendLeadEmailAlert(lead) {
   const resend = getResendClient();
   const fromEmail = process.env.EMAIL_FROM || process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
-  const toEmail = process.env.EMAIL_TO || process.env.RESEND_TO_EMAIL || 'info@syntralabs.es';
+  const toEmail = process.env.EMAIL_TO || process.env.RESEND_TO_EMAIL || 'info@luxdental.es';
 
   const htmlContent = `
     <!DOCTYPE html>

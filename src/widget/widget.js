@@ -1,7 +1,7 @@
 (function () {
   // Prevent duplicate initialization
-  if (window.SyntraChatInitialized) return;
-  window.SyntraChatInitialized = true;
+  if (window.LuxChatInitialized) return;
+  window.LuxChatInitialized = true;
 
   // Extract the backend URL dynamically using document.currentScript.src
   let backendUrl = '';
@@ -22,13 +22,13 @@
 
   // HTML templates for the widget
   const triggerHtml = `
-    <div class="syntra-chat-trigger" id="syntra-trigger">
+    <div class="lux-chat-trigger" id="lux-trigger">
       <!-- Chat icon (bubble) -->
-      <svg class="syntra-icon-chat" viewBox="0 0 24 24">
+      <svg class="lux-icon-chat" viewBox="0 0 24 24">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
       </svg>
       <!-- Close icon (X) -->
-      <svg class="syntra-icon-close" viewBox="0 0 24 24">
+      <svg class="lux-icon-close" viewBox="0 0 24 24">
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
@@ -36,29 +36,29 @@
   `;
 
   const windowHtml = `
-    <div class="syntra-chat-window" id="syntra-window">
-      <div class="syntra-chat-header">
-        <div class="syntra-chat-logo">
-          <img src="${backendUrl}/assets/logo.png" alt="Logo" />
+    <div class="lux-chat-window" id="lux-window">
+      <div class="lux-chat-header">
+        <div class="lux-chat-logo">
+          <img src="${backendUrl}/logo.png" alt="Logo" />
         </div>
-        <div class="syntra-chat-info">
-          <h3 class="syntra-chat-title">Clínica Dental</h3>
-          <div class="syntra-chat-status">
-            <span class="syntra-status-dot"></span>
+        <div class="lux-chat-info">
+          <h3 class="lux-chat-title">Clínica Dental</h3>
+          <div class="lux-chat-status">
+            <span class="lux-status-dot"></span>
             <span>Agente IA online</span>
           </div>
         </div>
-        <button class="syntra-chat-close-btn" id="syntra-close-btn" aria-label="Cerrar chat">
+        <button class="lux-chat-close-btn" id="lux-close-btn" aria-label="Cerrar chat">
           <svg viewBox="0 0 24 24">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
       </div>
-      <div class="syntra-chat-messages" id="syntra-messages"></div>
-      <form class="syntra-chat-input-form" id="syntra-input-form">
-        <input type="text" class="syntra-chat-input" id="syntra-input" placeholder="Escribe un mensaje..." autocomplete="off" />
-        <button type="submit" class="syntra-chat-send-btn" id="syntra-send-btn" disabled>
+      <div class="lux-chat-messages" id="lux-messages"></div>
+      <form class="lux-chat-input-form" id="lux-input-form">
+        <input type="text" class="lux-chat-input" id="lux-input" placeholder="Escribe un mensaje..." autocomplete="off" />
+        <button type="submit" class="lux-chat-send-btn" id="lux-send-btn" disabled>
           <!-- Paper plane send icon -->
           <svg viewBox="0 0 24 24">
             <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -72,17 +72,17 @@
   // Inject widget container on DOM load
   function initWidget() {
     const container = document.createElement('div');
-    container.id = 'syntra-chat-container';
+    container.id = 'lux-chat-container';
     container.innerHTML = triggerHtml + windowHtml;
     document.body.appendChild(container);
 
-    const trigger = document.getElementById('syntra-trigger');
-    const chatWindow = document.getElementById('syntra-window');
-    const input = document.getElementById('syntra-input');
-    const sendBtn = document.getElementById('syntra-send-btn');
-    const form = document.getElementById('syntra-input-form');
-    const messagesContainer = document.getElementById('syntra-messages');
-    const closeBtn = document.getElementById('syntra-close-btn');
+    const trigger = document.getElementById('lux-trigger');
+    const chatWindow = document.getElementById('lux-window');
+    const input = document.getElementById('lux-input');
+    const sendBtn = document.getElementById('lux-send-btn');
+    const form = document.getElementById('lux-input-form');
+    const messagesContainer = document.getElementById('lux-messages');
+    const closeBtn = document.getElementById('lux-close-btn');
 
     let history = [];
     let isOpen = false;
@@ -90,7 +90,7 @@
     let isLeadRegistered = false;
 
     // Set greeting
-    const greetingText = "Hola. Soy el asistente digital de la clínica. Estoy aquí para ayudarte. ¿En qué tratamiento estás interesado o qué necesitas mejorar de tu sonrisa?";
+    const greetingText = "Hola. Soy el asistente digital de Luxdental. Estoy aquí para ayudarte. ¿En qué tratamiento estás interesado o qué necesitas mejorar de tu sonrisa?";
     appendMessage('bot', greetingText);
 
     // Toggle Chat Window Open/Close
@@ -184,10 +184,10 @@
      */
     function appendMessage(sender, text) {
       const row = document.createElement('div');
-      row.className = `syntra-message-row ${sender}`;
+      row.className = `lux-message-row ${sender}`;
 
       const bubble = document.createElement('div');
-      bubble.className = 'syntra-message-bubble';
+      bubble.className = 'lux-message-bubble';
       bubble.innerHTML = formatMessageText(text);
 
       row.appendChild(bubble);
@@ -216,11 +216,11 @@
      */
     function showTypingIndicator() {
       const row = document.createElement('div');
-      row.className = 'syntra-message-row bot';
-      row.id = 'syntra-typing-bubble';
+      row.className = 'lux-message-row bot';
+      row.id = 'lux-typing-bubble';
 
       const indicator = document.createElement('div');
-      indicator.className = 'syntra-typing-indicator';
+      indicator.className = 'lux-typing-indicator';
       indicator.innerHTML = '<span></span><span></span><span></span>';
 
       row.appendChild(indicator);
@@ -232,7 +232,7 @@
      * Removes the typing indicator bubble.
      */
     function hideTypingIndicator() {
-      const typingBubble = document.getElementById('syntra-typing-bubble');
+      const typingBubble = document.getElementById('lux-typing-bubble');
       if (typingBubble) {
         typingBubble.remove();
       }

@@ -23,7 +23,7 @@
 }
 
 /* Floating trigger button */
-.syntra-chat-trigger {
+.lux-chat-trigger {
   position: fixed;
   bottom: 24px;
   right: 24px;
@@ -41,16 +41,16 @@
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.syntra-chat-trigger:hover {
+.lux-chat-trigger:hover {
   transform: scale(1.08) translateY(-2px);
   box-shadow: 0 12px 40px var(--chat-glow-50);
 }
 
-.syntra-chat-trigger:active {
+.lux-chat-trigger:active {
   transform: scale(0.95);
 }
 
-.syntra-chat-trigger svg {
+.lux-chat-trigger svg {
   width: 26px;
   height: 26px;
   fill: none;
@@ -61,24 +61,24 @@
   transition: transform 0.4s ease, opacity 0.3s ease;
 }
 
-.syntra-chat-trigger .syntra-icon-close {
+.lux-chat-trigger .lux-icon-close {
   position: absolute;
   opacity: 0;
   transform: rotate(-90deg);
 }
 
-.syntra-chat-trigger.open .syntra-icon-chat {
+.lux-chat-trigger.open .lux-icon-chat {
   opacity: 0;
   transform: rotate(90deg);
 }
 
-.syntra-chat-trigger.open .syntra-icon-close {
+.lux-chat-trigger.open .lux-icon-close {
   opacity: 1;
   transform: rotate(0deg);
 }
 
 /* Chat window card */
-.syntra-chat-window {
+.lux-chat-window {
   position: fixed;
   bottom: 98px;
   right: 24px;
@@ -105,14 +105,14 @@
               transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.syntra-chat-window.open {
+.lux-chat-window.open {
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: all;
 }
 
 /* Chat Header */
-.syntra-chat-header {
+.lux-chat-header {
   padding: 20px;
   background: rgba(255, 255, 255, 0.02);
   border-bottom: 1px solid var(--chat-border);
@@ -121,7 +121,7 @@
   gap: 12px;
 }
 
-.syntra-chat-logo {
+.lux-chat-logo {
   width: 40px;
   height: 40px;
   border-radius: 12px;
@@ -135,25 +135,25 @@
   color: var(--chat-primary);
 }
 
-.syntra-chat-logo img {
+.lux-chat-logo img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   border-radius: inherit;
 }
 
-.syntra-chat-info {
+.lux-chat-info {
   flex-grow: 1;
 }
 
-.syntra-chat-title {
+.lux-chat-title {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.3px;
 }
 
-.syntra-chat-status {
+.lux-chat-status {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -162,17 +162,17 @@
   margin-top: 2px;
 }
 
-.syntra-status-dot {
+.lux-status-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background-color: #10b981;
   box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
-  animation: syntra-pulse 2s infinite;
+  animation: lux-pulse 2s infinite;
 }
 
 /* Close button in header */
-.syntra-chat-close-btn {
+.lux-chat-close-btn {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--chat-border);
   border-radius: 50%;
@@ -187,17 +187,17 @@
   flex-shrink: 0;
 }
 
-.syntra-chat-close-btn:hover {
+.lux-chat-close-btn:hover {
   background: rgba(255, 255, 255, 0.1);
   color: var(--chat-text);
   transform: scale(1.05);
 }
 
-.syntra-chat-close-btn:active {
+.lux-chat-close-btn:active {
   transform: scale(0.95);
 }
 
-.syntra-chat-close-btn svg {
+.lux-chat-close-btn svg {
   width: 16px;
   height: 16px;
   stroke: currentColor;
@@ -208,7 +208,7 @@
 }
 
 /* Message List Container */
-.syntra-chat-messages {
+.lux-chat-messages {
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
@@ -220,51 +220,51 @@
 }
 
 /* Scrollbar styling */
-.syntra-chat-messages::-webkit-scrollbar {
+.lux-chat-messages::-webkit-scrollbar {
   width: 5px;
 }
-.syntra-chat-messages::-webkit-scrollbar-track {
+.lux-chat-messages::-webkit-scrollbar-track {
   background: transparent;
 }
-.syntra-chat-messages::-webkit-scrollbar-thumb {
+.lux-chat-messages::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
 }
-.syntra-chat-messages::-webkit-scrollbar-thumb:hover {
+.lux-chat-messages::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 
 /* Message row */
-.syntra-message-row {
+.lux-message-row {
   display: flex;
   width: 100%;
 }
 
-.syntra-message-row.user {
+.lux-message-row.user {
   justify-content: flex-end;
 }
 
-.syntra-message-row.bot {
+.lux-message-row.bot {
   justify-content: flex-start;
 }
 
 /* Message Bubble */
-.syntra-message-bubble {
+.lux-message-bubble {
   max-width: 80%;
   padding: 12px 16px;
   font-size: 14.5px;
   line-height: 1.5;
-  animation: syntra-pop-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1) forwards;
+  animation: lux-pop-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1) forwards;
 }
 
-.syntra-message-row.user .syntra-message-bubble {
+.lux-message-row.user .lux-message-bubble {
   background: var(--chat-bubble-user);
   color: #ffffff;
   border-radius: 18px 18px 4px 18px;
   box-shadow: 0 4px 12px var(--chat-glow-15);
 }
 
-.syntra-message-row.bot .syntra-message-bubble {
+.lux-message-row.bot .lux-message-bubble {
   background: var(--chat-bubble-bot);
   border: 1px solid var(--chat-bubble-border-bot);
   color: var(--chat-text);
@@ -272,22 +272,22 @@
 }
 
 /* HTML inside bubbles (e.g. formatted lists or linebreaks) */
-.syntra-message-bubble p {
+.lux-message-bubble p {
   margin: 0 0 8px 0;
 }
-.syntra-message-bubble p:last-child {
+.lux-message-bubble p:last-child {
   margin-bottom: 0;
 }
-.syntra-message-bubble ul, .syntra-message-bubble ol {
+.lux-message-bubble ul, .lux-message-bubble ol {
   margin: 4px 0;
   padding-left: 20px;
 }
-.syntra-message-bubble li {
+.lux-message-bubble li {
   margin-bottom: 4px;
 }
 
 /* Typing indicator */
-.syntra-typing-indicator {
+.lux-typing-indicator {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -298,24 +298,24 @@
   width: fit-content;
 }
 
-.syntra-typing-indicator span {
+.lux-typing-indicator span {
   width: 6px;
   height: 6px;
   background-color: var(--chat-text-muted);
   border-radius: 50%;
-  animation: syntra-bounce 1.4s infinite ease-in-out both;
+  animation: lux-bounce 1.4s infinite ease-in-out both;
 }
 
-.syntra-typing-indicator span:nth-child(1) {
+.lux-typing-indicator span:nth-child(1) {
   animation-delay: -0.32s;
 }
 
-.syntra-typing-indicator span:nth-child(2) {
+.lux-typing-indicator span:nth-child(2) {
   animation-delay: -0.16s;
 }
 
 /* Input Form Area */
-.syntra-chat-input-form {
+.lux-chat-input-form {
   padding: 16px;
   background: rgba(255, 255, 255, 0.01);
   border-top: 1px solid var(--chat-border);
@@ -324,7 +324,7 @@
   align-items: center;
 }
 
-.syntra-chat-input {
+.lux-chat-input {
   flex-grow: 1;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--chat-border);
@@ -337,18 +337,18 @@
   transition: all 0.3s ease;
 }
 
-.syntra-chat-input:focus {
+.lux-chat-input:focus {
   background: rgba(255, 255, 255, 0.08);
   border-color: var(--chat-glow-50);
   box-shadow: 0 0 0 3px var(--chat-glow-15);
 }
 
-.syntra-chat-input::placeholder {
+.lux-chat-input::placeholder {
   color: var(--chat-text-muted);
   opacity: 0.7;
 }
 
-.syntra-chat-send-btn {
+.lux-chat-send-btn {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -361,18 +361,18 @@
   transition: all 0.3s ease;
 }
 
-.syntra-chat-send-btn:hover:not(:disabled) {
+.lux-chat-send-btn:hover:not(:disabled) {
   background: var(--chat-primary);
   border-color: transparent;
   transform: scale(1.05);
 }
 
-.syntra-chat-send-btn:disabled {
+.lux-chat-send-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.syntra-chat-send-btn svg {
+.lux-chat-send-btn svg {
   width: 18px;
   height: 18px;
   fill: none;
@@ -381,12 +381,12 @@
   transition: stroke 0.3s ease;
 }
 
-.syntra-chat-send-btn:hover:not(:disabled) svg {
+.lux-chat-send-btn:hover:not(:disabled) svg {
   stroke: #ffffff;
 }
 
 /* Animations */
-@keyframes syntra-pulse {
+@keyframes lux-pulse {
   0% {
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
@@ -401,7 +401,7 @@
   }
 }
 
-@keyframes syntra-pop-in {
+@keyframes lux-pop-in {
   from {
     opacity: 0;
     transform: scale(0.92) translateY(10px);
@@ -412,7 +412,7 @@
   }
 }
 
-@keyframes syntra-bounce {
+@keyframes lux-bounce {
   0%, 80%, 100% { 
     transform: scale(0);
   } 40% { 
@@ -422,7 +422,7 @@
 
 /* Responsive adjustment for Mobile viewports */
 @media (max-width: 480px) {
-  .syntra-chat-window {
+  .lux-chat-window {
     bottom: 0;
     right: 0;
     width: 100vw;
@@ -438,12 +438,12 @@
     padding-right: env(safe-area-inset-right, 0px);
   }
   
-  .syntra-chat-trigger {
+  .lux-chat-trigger {
     bottom: 16px;
     right: 16px;
   }
   
-  .syntra-chat-trigger.open {
+  .lux-chat-trigger.open {
     display: none; /* Hide toggle button when full-screen chat is open */
   }
 }

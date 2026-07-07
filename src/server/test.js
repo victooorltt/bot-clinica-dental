@@ -41,10 +41,10 @@ test('Dental Clinic Lead Integration Test Suite', async (t) => {
   await t.test('4.1 Validation Schema of /api/lead (Invalid Fields)', async () => {
     const invalidPayloads = [
       {}, // empty
-      { name: '', company: 'Syntra', email: 'test@example.com', phone: '123', goals: 'Automatización', timeframe: 'Este mes' }, // empty name
-      { name: 'John', company: 'Syntra', email: 'not-an-email', phone: '123', goals: 'Automatización', timeframe: 'Este mes' }, // invalid email format
-      { name: 'John', company: 'Syntra', email: 'test@example.com', phone: '123', goals: 'Inexistente', timeframe: 'Este mes' }, // invalid goals enum
-      { name: 'John', company: 'Syntra', email: 'test@example.com', phone: '123', goals: 'Automatización', timeframe: 'Nunca' } // invalid timeframe enum
+      { name: '', company: 'Luxdental', email: 'test@example.com', phone: '123', goals: 'Automatización', timeframe: 'Este mes' }, // empty name
+      { name: 'John', company: 'Luxdental', email: 'not-an-email', phone: '123', goals: 'Automatización', timeframe: 'Este mes' }, // invalid email format
+      { name: 'John', company: 'Luxdental', email: 'test@example.com', phone: '123', goals: 'Inexistente', timeframe: 'Este mes' }, // invalid goals enum
+      { name: 'John', company: 'Luxdental', email: 'test@example.com', phone: '123', goals: 'Automatización', timeframe: 'Nunca' } // invalid timeframe enum
     ];
 
     for (const payload of invalidPayloads) {
@@ -162,7 +162,7 @@ test('Dental Clinic Lead Integration Test Suite', async (t) => {
       assert.strictEqual(response.status, 200);
       const data = await response.json();
       assert.strictEqual(data.leadStatus, 'registered');
-      assert.ok(data.response.includes('clínica'));
+      assert.ok(data.response.includes('Luxdental'));
       assert.ok(data.response.includes('recibido tu solicitud'));
 
       // Verify that the local fallback file has recorded this mocked lead
