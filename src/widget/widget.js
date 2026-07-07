@@ -154,23 +154,34 @@
 
     // Function to dynamically load Vapi SDK
     function loadVapiSdk() {
-      return new Promise((resolve, reject) => {
-        if (window.Vapi) {
-          resolve();
-          return;
-        }
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/@vapi-ai/web@1/dist/vapi.js';
-        script.onload = () => {
-          if (window.Vapi) {
-            resolve();
-          } else {
-            reject(new Error('El constructor de Vapi no se encontró.'));
+      if (window.Vapi) {
+        return Promise.resolve();
+      }
+      return import('https://cdn.jsdelivr.net/npm/@vapi-ai/web@1/+esm')
+        .then((module) => {
+          let constructor = null;
+          if (module) {
+            if (module.default && module.default.default && typeof module.default.default === 'function') {
+              constructor = module.default.default;
+            } else if (module.default && typeof module.default === 'function') {
+              constructor = module.default;
+            } else if (module.Vapi && typeof module.Vapi === 'function') {
+              constructor = module.Vapi;
+            } else if (typeof module === 'function') {
+              constructor = module;
+            }
           }
-        };
-        script.onerror = () => reject(new Error('Error al cargar el script de Vapi.'));
-        document.head.appendChild(script);
-      });
+
+          if (constructor) {
+            window.Vapi = constructor;
+          } else {
+            throw new Error('El constructor de Vapi no se encontró en el módulo.');
+          }
+        })
+        .catch((err) => {
+          console.error('Error al cargar el SDK de Vapi:', err);
+          throw new Error('Error al cargar el SDK de Vapi.');
+        });
     }
 
     // Function to fetch config
