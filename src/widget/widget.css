@@ -447,3 +447,193 @@
     display: none; /* Hide toggle button when full-screen chat is open */
   }
 }
+
+/* Segmented control for switching text/voice */
+.lux-chat-toggle-container {
+  display: flex;
+  margin: 0 20px 12px 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--chat-border);
+  border-radius: 20px;
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.lux-chat-toggle-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--chat-text-muted);
+  padding: 8px 12px;
+  font-family: var(--chat-font);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 17px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lux-chat-toggle-btn.active {
+  background: var(--chat-bubble-user);
+  color: #ffffff;
+  box-shadow: 0 4px 12px var(--chat-glow-15);
+}
+
+.lux-chat-toggle-btn:hover:not(.active) {
+  color: var(--chat-text);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Voice call container */
+.lux-voice-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  gap: 24px;
+  text-align: center;
+  animation: lux-pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1) forwards;
+}
+
+.lux-voice-status {
+  font-size: 14px;
+  color: var(--chat-text-muted);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  min-height: 20px;
+}
+
+/* Call states: idle, connecting, active, error */
+.lux-voice-status.connecting {
+  color: #f59e0b; /* Amber */
+}
+.lux-voice-status.active {
+  color: #10b981; /* Green */
+}
+.lux-voice-status.error {
+  color: #ef4444; /* Red */
+}
+
+.lux-voice-visualizer {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lux-phone-icon-wrapper {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: var(--chat-bubble-user);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px var(--chat-glow-35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.lux-voice-phone-icon {
+  stroke: #ffffff;
+  transition: transform 0.3s ease;
+}
+
+/* Pulse animation for visualizer */
+.lux-pulse-circle {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: var(--chat-glow-35);
+  z-index: 1;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.lux-voice-container.connecting .lux-pulse-circle {
+  animation: lux-pulse-connecting 1.5s infinite ease-in-out;
+}
+
+.lux-voice-container.active .lux-pulse-circle {
+  animation: lux-pulse-active 1.5s infinite ease-in-out;
+}
+
+.lux-voice-container.active .lux-phone-icon-wrapper {
+  background: #10b981;
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.35);
+}
+
+.lux-voice-container.error .lux-phone-icon-wrapper {
+  background: #ef4444;
+  box-shadow: 0 8px 32px rgba(239, 68, 68, 0.35);
+}
+
+.lux-voice-action-btn {
+  width: 100%;
+  max-width: 220px;
+  padding: 14px 28px;
+  font-family: var(--chat-font);
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--chat-bubble-user);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px var(--chat-glow-35);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.lux-voice-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px var(--chat-glow-50);
+}
+
+.lux-voice-action-btn:active {
+  transform: translateY(0);
+}
+
+.lux-voice-action-btn.active {
+  background: #ef4444; /* Stop button is red */
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.25);
+}
+
+.lux-voice-action-btn.active:hover {
+  box-shadow: 0 12px 30px rgba(239, 68, 68, 0.4);
+}
+
+@keyframes lux-pulse-connecting {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes lux-pulse-active {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+    background: rgba(16, 185, 129, 0.3);
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+    background: rgba(16, 185, 129, 0);
+  }
+}
+

@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { handleChat } from './controllers/chat.controller.js';
 import { handleManualLeadSubmission } from './controllers/lead.controller.js';
+import { handleVapiWebhook, handleConfig } from './controllers/vapi.controller.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,6 +37,8 @@ app.use(express.static(path.resolve(projectRoot, 'public')));
 // API Endpoints
 app.post('/api/chat', handleChat);
 app.post('/api/lead', handleManualLeadSubmission);
+app.post('/api/vapi-webhook', handleVapiWebhook);
+app.get('/api/config', handleConfig);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

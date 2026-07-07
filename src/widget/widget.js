@@ -55,7 +55,26 @@
           </svg>
         </button>
       </div>
+      <div class="lux-chat-toggle-container">
+        <button class="lux-chat-toggle-btn active" id="lux-toggle-text">Texto 💬</button>
+        <button class="lux-chat-toggle-btn" id="lux-toggle-voice">Voz 📞</button>
+      </div>
       <div class="lux-chat-messages" id="lux-messages"></div>
+      
+      <!-- Voice Call Interface -->
+      <div class="lux-voice-container" id="lux-voice-container" style="display: none;">
+        <div class="lux-voice-status" id="lux-voice-status">Llamada no iniciada</div>
+        <div class="lux-voice-visualizer" id="lux-voice-visualizer">
+          <div class="lux-pulse-circle"></div>
+          <div class="lux-phone-icon-wrapper">
+             <svg class="lux-voice-phone-icon" viewBox="0 0 24 24" width="40" height="40" stroke="currentColor" fill="none" stroke-width="2">
+               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+             </svg>
+          </div>
+        </div>
+        <button class="lux-voice-action-btn" id="lux-voice-btn">Iniciar Llamada</button>
+      </div>
+
       <form class="lux-chat-input-form" id="lux-input-form">
         <input type="text" class="lux-chat-input" id="lux-input" placeholder="Escribe un mensaje..." autocomplete="off" />
         <button type="submit" class="lux-chat-send-btn" id="lux-send-btn" disabled>
@@ -84,10 +103,163 @@
     const messagesContainer = document.getElementById('lux-messages');
     const closeBtn = document.getElementById('lux-close-btn');
 
+    // Toggle Text/Voice elements
+    const toggleTextBtn = document.getElementById('lux-toggle-text');
+    const toggleVoiceBtn = document.getElementById('lux-toggle-voice');
+    const voiceContainer = document.getElementById('lux-voice-container');
+    const voiceStatus = document.getElementById('lux-voice-status');
+    const voiceBtn = document.getElementById('lux-voice-btn');
+
     let history = [];
     let isOpen = false;
     let isLoading = false;
     let isLeadRegistered = false;
+
+    // Vapi State Variables
+    let vapiInstance = null;
+    let vapiConfig = null;
+    let callState = 'idle'; // idle, connecting, active, error
+
+    // Update Vapi Call state UI
+    function setCallState(state, errorMsg = '') {
+      callState = state;
+      voiceContainer.className = `lux-voice-container ${state}`;
+      
+      if (state === 'idle') {
+        voiceStatus.textContent = 'Llamada no iniciada';
+        voiceStatus.className = 'lux-voice-status';
+        voiceBtn.textContent = 'Iniciar Llamada';
+        voiceBtn.className = 'lux-voice-action-btn';
+        voiceBtn.disabled = false;
+      } else if (state === 'connecting') {
+        voiceStatus.textContent = 'Conectando...';
+        voiceStatus.className = 'lux-voice-status connecting';
+        voiceBtn.textContent = 'Conectando';
+        voiceBtn.className = 'lux-voice-action-btn';
+        voiceBtn.disabled = true;
+      } else if (state === 'active') {
+        voiceStatus.textContent = 'Llamada activa';
+        voiceStatus.className = 'lux-voice-status active';
+        voiceBtn.textContent = 'Finalizar Llamada';
+        voiceBtn.className = 'lux-voice-action-btn active';
+        voiceBtn.disabled = false;
+      } else if (state === 'error') {
+        voiceStatus.textContent = errorMsg || 'Error en la llamada';
+        voiceStatus.className = 'lux-voice-status error';
+        voiceBtn.textContent = 'Volver a Intentar';
+        voiceBtn.className = 'lux-voice-action-btn';
+        voiceBtn.disabled = false;
+      }
+    }
+
+    // Function to dynamically load Vapi SDK
+    function loadVapiSdk() {
+      return new Promise((resolve, reject) => {
+        if (window.Vapi) {
+          resolve();
+          return;
+        }
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/@vapi-ai/web@1/dist/vapi.js';
+        script.onload = () => {
+          if (window.Vapi) {
+            resolve();
+          } else {
+            reject(new Error('El constructor de Vapi no se encontró.'));
+          }
+        };
+        script.onerror = () => reject(new Error('Error al cargar el script de Vapi.'));
+        document.head.appendChild(script);
+      });
+    }
+
+    // Function to fetch config
+    async function fetchVapiConfig() {
+      if (vapiConfig) return vapiConfig;
+      const res = await fetch(backendUrl + '/api/config');
+      if (!res.ok) {
+        throw new Error('No se pudo obtener la configuración del servidor.');
+      }
+      vapiConfig = await res.json();
+      return vapiConfig;
+    }
+
+    // Function to start call
+    async function startCall() {
+      setCallState('connecting');
+      try {
+        const [config] = await Promise.all([
+          fetchVapiConfig(),
+          loadVapiSdk()
+        ]);
+
+        if (!config.VAPI_PUBLIC_KEY || !config.VAPI_ASSISTANT_ID) {
+          throw new Error('Configuración de Vapi incompleta.');
+        }
+
+        if (!vapiInstance) {
+          vapiInstance = new window.Vapi(config.VAPI_PUBLIC_KEY);
+
+          vapiInstance.on('call-start', () => {
+            console.log('Vapi Call started');
+            setCallState('active');
+          });
+
+          vapiInstance.on('call-end', () => {
+            console.log('Vapi Call ended');
+            setCallState('idle');
+          });
+
+          vapiInstance.on('error', (err) => {
+            console.error('Vapi Error:', err);
+            setCallState('error', 'Error en la llamada');
+          });
+        }
+
+        await vapiInstance.start(config.VAPI_ASSISTANT_ID);
+      } catch (err) {
+        console.error('Failed to start call:', err);
+        setCallState('error', err.message || 'Error al iniciar llamada');
+      }
+    }
+
+    // Function to stop call
+    function stopCall() {
+      if (vapiInstance) {
+        try {
+          vapiInstance.stop();
+        } catch (err) {
+          console.error('Error stopping Vapi call:', err);
+        }
+      }
+      setCallState('idle');
+    }
+
+    // Toggle interface event listeners
+    toggleTextBtn.addEventListener('click', () => {
+      toggleTextBtn.classList.add('active');
+      toggleVoiceBtn.classList.remove('active');
+      messagesContainer.style.display = 'flex';
+      form.style.display = 'flex';
+      voiceContainer.style.display = 'none';
+    });
+
+    toggleVoiceBtn.addEventListener('click', () => {
+      toggleVoiceBtn.classList.add('active');
+      toggleTextBtn.classList.remove('active');
+      messagesContainer.style.display = 'none';
+      form.style.display = 'none';
+      voiceContainer.style.display = 'flex';
+    });
+
+    // Voice button event listener
+    voiceBtn.addEventListener('click', async () => {
+      if (callState === 'idle' || callState === 'error') {
+        await startCall();
+      } else if (callState === 'active') {
+        stopCall();
+      }
+    });
 
     // Set greeting
     const greetingText = "Hola. Soy el asistente digital de Luxdental. Estoy aquí para ayudarte. ¿En qué tratamiento estás interesado o qué necesitas mejorar de tu sonrisa?";
@@ -99,10 +271,16 @@
       if (isOpen) {
         trigger.classList.add('open');
         chatWindow.classList.add('open');
-        setTimeout(() => input.focus(), 150);
+        if (toggleTextBtn.classList.contains('active')) {
+          setTimeout(() => input.focus(), 150);
+        }
       } else {
         trigger.classList.remove('open');
         chatWindow.classList.remove('open');
+        // Stop active call if window is closed
+        if (callState === 'active' || callState === 'connecting') {
+          stopCall();
+        }
       }
     });
 
@@ -112,6 +290,10 @@
         isOpen = false;
         trigger.classList.remove('open');
         chatWindow.classList.remove('open');
+        // Stop active call if window is closed
+        if (callState === 'active' || callState === 'connecting') {
+          stopCall();
+        }
       });
     }
 

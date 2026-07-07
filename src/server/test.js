@@ -245,4 +245,87 @@ test('Dental Clinic Lead Integration Test Suite', async (t) => {
       process.env.NOTION_DATABASE_ID = originalDbId;
     }
   });
+
+  await t.test('4.5 /api/config returns Vapi public keys', async () => {
+    process.env.VAPI_PUBLIC_KEY = 'vapi_test_pub_key';
+    process.env.VAPI_ASSISTANT_ID = 'vapi_test_assistant_id';
+
+    const response = await fetch(`${BASE_URL}/api/config`);
+    assert.strictEqual(response.status, 200);
+    const data = await response.json();
+    assert.strictEqual(data.VAPI_PUBLIC_KEY, 'vapi_test_pub_key');
+    assert.strictEqual(data.VAPI_ASSISTANT_ID, 'vapi_test_assistant_id');
+  });
+
+  await t.test('4.6 /api/vapi-webhook processes tool call and responds to Vapi', async () => {
+    const { Client } = await import('@notionhq/client');
+    const { Resend } = await import('resend');
+
+    const originalRequest = Client.prototype.request;
+
+    Client.prototype.request = async function(args) {
+      return { id: 'mocked_notion_lead_page_id' };
+    };
+
+    // Use Object.defineProperty to mock instance emails property
+    Object.defineProperty(Resend.prototype, 'emails', {
+      value: {
+        send: async function(args) {
+          return { id: 'mocked_email_id' };
+        }
+      },
+      writable: true,
+      configurable: true
+    });
+
+    const originalToken = process.env.NOTION_TOKEN;
+    const originalDbId = process.env.NOTION_DATABASE_ID;
+    const originalResendKey = process.env.RESEND_API_KEY;
+
+    process.env.NOTION_TOKEN = 'valid_mock_token';
+    process.env.NOTION_DATABASE_ID = 'valid_mock_db_id';
+    process.env.RESEND_API_KEY = 'valid_mock_resend_key';
+
+    const webhookPayload = {
+      message: {
+        type: 'tool-calls',
+        toolCalls: [
+          {
+            id: 'call_abc_123',
+            type: 'function',
+            function: {
+              name: 'register_lead',
+              arguments: JSON.stringify({
+                name: 'Vapi Call User',
+                phone: '+34699999999',
+                email: 'vapi@example.com',
+                notes: 'Wants to align teeth invisible ortodoncia'
+              })
+            }
+          }
+        ]
+      }
+    };
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/vapi-webhook`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(webhookPayload)
+      });
+
+      assert.strictEqual(response.status, 200);
+      const data = await response.json();
+      assert.ok(Array.isArray(data.results));
+      assert.strictEqual(data.results[0].toolCallId, 'call_abc_123');
+      assert.strictEqual(data.results[0].result, 'Lead registrado en Notion y notificado por email exitosamente.');
+    } finally {
+      Client.prototype.request = originalRequest;
+      delete Resend.prototype.emails;
+      process.env.NOTION_TOKEN = originalToken;
+      process.env.NOTION_DATABASE_ID = originalDbId;
+      process.env.RESEND_API_KEY = originalResendKey;
+    }
+  });
 });
+
