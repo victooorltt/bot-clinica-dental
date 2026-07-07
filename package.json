@@ -1,7 +1,7 @@
 {
-  "name": "bot-syntralabs",
+  "name": "bot-clinica-texto-y-voz",
   "version": "1.0.0",
-  "description": "AI Chatbot and CRM Lead qualification agent for Syntra Labs",
+  "description": "AI Chatbot and CRM Lead qualification agent for Dental Clinic",
   "main": "src/server/index.js",
   "type": "module",
   "scripts": {

@@ -45,7 +45,7 @@ app.use((err, req, res, next) => {
 
 // Start the server
 const server = app.listen(PORT, () => {
-  console.log(`[SyntraLabs Bot] Server running at http://localhost:${PORT}`);
+  console.log(`[Dental Clinic Bot] Server running at http://localhost:${PORT}`);
 });
 
 export { app, server };

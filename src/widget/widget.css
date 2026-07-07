@@ -1,20 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --chat-primary: hsl(220, 90%, 56%);
-  --chat-primary-hover: hsl(220, 90%, 62%);
+  --chat-primary: #A49270;
+  --chat-primary-hover: #90805E;
   --chat-bg: rgba(15, 22, 36, 0.75);
   --chat-blur: blur(20px);
   --chat-border: rgba(255, 255, 255, 0.08);
   --chat-text: #f3f4f6;
   --chat-text-muted: #9ca3af;
   
-  --chat-bubble-user: linear-gradient(135deg, hsl(220, 90%, 56%), hsl(240, 85%, 60%));
+  --chat-bubble-user: linear-gradient(135deg, #A49270, #807050);
   --chat-bubble-bot: rgba(255, 255, 255, 0.06);
   --chat-bubble-border-bot: rgba(255, 255, 255, 0.08);
   --chat-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
   --chat-font: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --chat-radius: 18px;
+
+  /* Golden theme glow/shadow components */
+  --chat-glow-35: rgba(164, 146, 112, 0.35);
+  --chat-glow-50: rgba(164, 146, 112, 0.5);
+  --chat-glow-15: rgba(164, 146, 112, 0.15);
 }
 
 /* Floating trigger button */
@@ -26,7 +31,7 @@
   height: 60px;
   border-radius: 50%;
   background: var(--chat-bubble-user);
-  box-shadow: 0 8px 32px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 8px 32px var(--chat-glow-35);
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
   z-index: 1000;
@@ -38,7 +43,7 @@
 
 .syntra-chat-trigger:hover {
   transform: scale(1.08) translateY(-2px);
-  box-shadow: 0 12px 40px rgba(37, 99, 235, 0.5);
+  box-shadow: 0 12px 40px var(--chat-glow-50);
 }
 
 .syntra-chat-trigger:active {
@@ -127,7 +132,7 @@
   justify-content: center;
   font-weight: 700;
   font-size: 18px;
-  color: hsl(220, 90%, 65%);
+  color: var(--chat-primary);
 }
 
 .syntra-chat-logo img {
@@ -166,6 +171,42 @@
   animation: syntra-pulse 2s infinite;
 }
 
+/* Close button in header */
+.syntra-chat-close-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--chat-border);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--chat-text-muted);
+  flex-shrink: 0;
+}
+
+.syntra-chat-close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--chat-text);
+  transform: scale(1.05);
+}
+
+.syntra-chat-close-btn:active {
+  transform: scale(0.95);
+}
+
+.syntra-chat-close-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
 /* Message List Container */
 .syntra-chat-messages {
   flex-grow: 1;
@@ -175,6 +216,7 @@
   flex-direction: column;
   gap: 16px;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Scrollbar styling */
@@ -219,7 +261,7 @@
   background: var(--chat-bubble-user);
   color: #ffffff;
   border-radius: 18px 18px 4px 18px;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 4px 12px var(--chat-glow-15);
 }
 
 .syntra-message-row.bot .syntra-message-bubble {
@@ -297,8 +339,8 @@
 
 .syntra-chat-input:focus {
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(37, 99, 235, 0.5);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  border-color: var(--chat-glow-50);
+  box-shadow: 0 0 0 3px var(--chat-glow-15);
 }
 
 .syntra-chat-input::placeholder {
@@ -384,10 +426,16 @@
     bottom: 0;
     right: 0;
     width: 100vw;
-    height: 100vh;
-    max-height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
     border-radius: 0;
     border: none;
+    
+    /* Support safe area spacing on devices with notch/home indicators */
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
   }
   
   .syntra-chat-trigger {

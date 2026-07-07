@@ -92,21 +92,18 @@ export async function createNotionLead(lead) {
       "Email": {
         email: sanitizeOptionalString(lead.email)
       },
-      "Página web actual": {
-        url: sanitizeOptionalString(lead.website)
-      },
       "Sector": {
-        rich_text: sectorSanitized ? [
+        rich_text: [
           {
             text: {
-              content: sectorSanitized
+              content: "clinica dental"
             }
           }
-        ] : []
+        ]
       },
       "Servicio solicitado": {
         select: {
-          name: serviceName
+          name: "Otro"
         }
       },
       "Estado comercial": {

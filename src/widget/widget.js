@@ -42,12 +42,18 @@
           <img src="${backendUrl}/assets/logo.png" alt="Logo" />
         </div>
         <div class="syntra-chat-info">
-          <h3 class="syntra-chat-title">Syntra Labs</h3>
+          <h3 class="syntra-chat-title">Clínica Dental</h3>
           <div class="syntra-chat-status">
             <span class="syntra-status-dot"></span>
             <span>Agente IA online</span>
           </div>
         </div>
+        <button class="syntra-chat-close-btn" id="syntra-close-btn" aria-label="Cerrar chat">
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
       <div class="syntra-chat-messages" id="syntra-messages"></div>
       <form class="syntra-chat-input-form" id="syntra-input-form">
@@ -76,6 +82,7 @@
     const sendBtn = document.getElementById('syntra-send-btn');
     const form = document.getElementById('syntra-input-form');
     const messagesContainer = document.getElementById('syntra-messages');
+    const closeBtn = document.getElementById('syntra-close-btn');
 
     let history = [];
     let isOpen = false;
@@ -83,7 +90,7 @@
     let isLeadRegistered = false;
 
     // Set greeting
-    const greetingText = "¡Hola! Bienvenido a Syntra Labs. Soy tu asistente virtual. ¿En qué podemos ayudarte hoy? (Diseño web, Agentes IA, Automatizaciones...)";
+    const greetingText = "Hola. Soy el asistente digital de la clínica. Estoy aquí para ayudarte. ¿En qué tratamiento estás interesado o qué necesitas mejorar de tu sonrisa?";
     appendMessage('bot', greetingText);
 
     // Toggle Chat Window Open/Close
@@ -98,6 +105,15 @@
         chatWindow.classList.remove('open');
       }
     });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        isOpen = false;
+        trigger.classList.remove('open');
+        chatWindow.classList.remove('open');
+      });
+    }
 
     // Toggle Send Button visibility/status
     input.addEventListener('input', () => {

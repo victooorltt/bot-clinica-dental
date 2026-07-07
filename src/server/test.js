@@ -29,7 +29,7 @@ async function cleanFallbackLog() {
   }
 }
 
-test('Syntra Labs Lead Integration Test Suite', async (t) => {
+test('Dental Clinic Lead Integration Test Suite', async (t) => {
 
   t.after(async () => {
     // Clean up server resources
@@ -162,7 +162,7 @@ test('Syntra Labs Lead Integration Test Suite', async (t) => {
       assert.strictEqual(response.status, 200);
       const data = await response.json();
       assert.strictEqual(data.leadStatus, 'registered');
-      assert.ok(data.response.includes('Syntra Labs'));
+      assert.ok(data.response.includes('clínica'));
       assert.ok(data.response.includes('recibido tu solicitud'));
 
       // Verify that the local fallback file has recorded this mocked lead
@@ -216,8 +216,7 @@ test('Syntra Labs Lead Integration Test Suite', async (t) => {
       assert.deepEqual(lastPayload.properties.Empresa.rich_text, []);
       assert.strictEqual(lastPayload.properties.Teléfono.phone_number, null);
       assert.strictEqual(lastPayload.properties.Email.email, null);
-      assert.strictEqual(lastPayload.properties['Página web actual'].url, null);
-      assert.deepEqual(lastPayload.properties.Sector.rich_text, []);
+      assert.strictEqual(lastPayload.properties.Sector.rich_text[0].text.content, 'clinica dental');
 
       // Test with actual populated fields to ensure they are preserved and trimmed
       const leadWithPopulatedFields = {
@@ -237,8 +236,7 @@ test('Syntra Labs Lead Integration Test Suite', async (t) => {
       assert.strictEqual(lastPayload.properties.Empresa.rich_text[0].text.content, 'Acme Corp');
       assert.strictEqual(lastPayload.properties.Teléfono.phone_number, '+34600123456');
       assert.strictEqual(lastPayload.properties.Email.email, 'jane@example.com');
-      assert.strictEqual(lastPayload.properties['Página web actual'].url, 'https://example.com');
-      assert.strictEqual(lastPayload.properties.Sector.rich_text[0].text.content, 'Tech');
+      assert.strictEqual(lastPayload.properties.Sector.rich_text[0].text.content, 'clinica dental');
 
     } finally {
       Client.prototype.request = originalRequest;

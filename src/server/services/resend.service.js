@@ -92,7 +92,7 @@ export async function sendLeadEmailAlert(lead) {
       <div class="container">
         <div class="header">
           <h1>Nuevo Lead Registrado</h1>
-          <p style="margin: 4px 0 0 0; font-size: 14px; opacity: 0.8;">Agente de IA Web - Syntra Labs</p>
+          <p style="margin: 4px 0 0 0; font-size: 14px; opacity: 0.8;">Agente de IA Web - Clínica Dental</p>
         </div>
         <div class="content">
           <table class="lead-detail-table">
@@ -101,7 +101,7 @@ export async function sendLeadEmailAlert(lead) {
               <td class="value">${lead.name}</td>
             </tr>
             <tr>
-              <td class="label">Empresa</td>
+              <td class="label">Clínica</td>
               <td class="value">${lead.company}</td>
             </tr>
             <tr>
@@ -113,12 +113,8 @@ export async function sendLeadEmailAlert(lead) {
               <td class="value"><a href="tel:${lead.phone}">${lead.phone}</a></td>
             </tr>
             <tr>
-              <td class="label">Página Web</td>
-              <td class="value">${lead.website ? `<a href="${lead.website}" target="_blank">${lead.website}</a>` : 'No proporcionada'}</td>
-            </tr>
-            <tr>
               <td class="label">Sector</td>
-              <td class="value">${lead.sector || 'No especificado'}</td>
+              <td class="value">${lead.sector || 'clinica dental'}</td>
             </tr>
             <tr>
               <td class="label">Objetivos</td>
@@ -134,7 +130,7 @@ export async function sendLeadEmailAlert(lead) {
           </p>
         </div>
         <div class="footer">
-          &copy; ${new Date().getFullYear()} Syntra Labs. Todos los derechos reservados.
+          &copy; ${new Date().getFullYear()} Clínica Dental. Todos los derechos reservados.
         </div>
       </div>
     </body>
