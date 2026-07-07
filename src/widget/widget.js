@@ -56,8 +56,8 @@
         </button>
       </div>
       <div class="lux-chat-toggle-container">
-        <button class="lux-chat-toggle-btn active" id="lux-toggle-text">Texto 💬</button>
-        <button class="lux-chat-toggle-btn" id="lux-toggle-voice">Voz 📞</button>
+        <button class="lux-chat-toggle-btn active" id="lux-toggle-text">Texto</button>
+        <button class="lux-chat-toggle-btn" id="lux-toggle-voice">Llamada</button>
       </div>
       <div class="lux-chat-messages" id="lux-messages"></div>
       
